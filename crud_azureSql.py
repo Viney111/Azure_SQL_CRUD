@@ -15,10 +15,55 @@ try:
 except Exception as ex:
     print(ex)
 
+
+def dict_input_from_Console():
+    """
+        Description: Function is to taking input from Console and storing in Dictionary for Sql.
+        Parameter: None
+        Return: Just returns input data in form of Dictionary
+    """  
+    try:
+        employee_name = input("Enter Employee Name: ")
+        gender = input("Enter gender: ")
+        salary = int(input( "Enter salary: "))
+        date = input("Enter Start Date in format (yyyy/mm/dd): ")
+    except Exception as ex:
+        print(ex)
+    else:
+        return {'employee_name':employee_name,'gender':gender,'salary':salary,'date':date}
+
+
+def adding_Console_data_in_Db():
+    """
+        Description: Function is to enter data in Db from Console
+        Parameter: None
+        Return: Just prints a successful message.
+    """
+    try:
+        input_dict = dict_input_from_Console()
+        mycursor.execute(f"INSERT INTO tbl_employee_Payroll (EmployeeName,Gender,Salary,StartDate) VALUES ('{input_dict['employee_name']}','{input_dict['gender']}',{input_dict['salary']},'{input_dict['date']}')")
+    except Exception as ex:
+        print(ex)
+    else:
+        connection_str.commit()
+        print("Data Added Successfully")
+
+
+def show_data():
+    try:
+        sql_query = "SELECT * FROM tbl_employee_Payroll"
+        mycursor.execute(sql_query)
+        data = mycursor.fetchall()
+        for i in data:
+            print(i)
+    except Exception as ex:
+        print(ex)
+    
+
 def create_table():
     """
         Description: Function is to create a new table
-        Parameter: None
+        Parameter: None 
         Return: Just prints a successful message
     """
     try:
@@ -29,6 +74,7 @@ def create_table():
     else:
         connection_str.commit()
         print("Table is created Successfully in Azure SQL")
+
 
 def adding_hardcoded_data__in_tbl():
     """
@@ -45,6 +91,10 @@ def adding_hardcoded_data__in_tbl():
         connection_str.commit()
         print("Data Added Successfully in Azure SQL")       
 
+
 if __name__=="__main__":
-    create_table()
-    adding_hardcoded_data__in_tbl()
+    # create_table()
+    # adding_hardcoded_data__in_tbl()
+    adding_Console_data_in_Db()
+    show_data() 
+    connection_str.close()
