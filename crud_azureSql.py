@@ -49,7 +49,13 @@ def adding_Console_data_in_Db():
         print("Data Added Successfully")
 
 
+
 def show_data():
+    """
+        Description: Function is to show the data contained in Table
+        Parameter: None
+        Return: Just prints the records present in table.
+    """
     try:
         sql_query = "SELECT * FROM tbl_employee_Payroll"
         mycursor.execute(sql_query)
@@ -60,6 +66,38 @@ def show_data():
         print(ex)
     
 
+def update_data():
+    """
+        Description: Function is to update the data by Employee Id.
+        Parameter: None
+        Return: Just prints the records present in table.
+    """
+    try:
+        emp_id = int(input("Enter Employee Id, u want to update: "))
+        updated_dict = dict_input_from_Console()
+        mycursor.execute(f"UPDATE tbl_employee_Payroll SET EmployeeName='{updated_dict['employee_name']}',Gender='{updated_dict['gender']}',Salary={updated_dict['salary']},StartDate='{updated_dict['date']}' WHERE EmployeeId = {emp_id}")
+    except Exception as ex:
+        print(ex)
+    else:
+        connection_str.commit()
+        print("Data Updated Successfully")
+
+
+def delete_data():
+    """
+        Description: Function is to update the data by Employee Id.
+        Parameter: None
+        Return: Just prints the records present in table.
+    """
+    try:
+        emp_id = int(input("Enter Employee Id, u want to delete: "))
+        mycursor.execute(f"DELETE FROM tbl_employee_Payroll WHERE EmployeeId = {emp_id}")
+    except Exception as ex:
+        print(ex)
+    else:
+        connection_str.commit()
+        print("Data Deleted Successfully")
+       
 def create_table():
     """
         Description: Function is to create a new table
@@ -95,6 +133,8 @@ def adding_hardcoded_data__in_tbl():
 if __name__=="__main__":
     # create_table()
     # adding_hardcoded_data__in_tbl()
-    adding_Console_data_in_Db()
+    # adding_Console_data_in_Db()
+    # update_data()
+    delete_data()
     show_data() 
     connection_str.close()
